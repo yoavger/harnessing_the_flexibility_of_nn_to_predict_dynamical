@@ -16,6 +16,8 @@ https://www.sciencedirect.com/science/article/pii/S0010027717303359#b0180
 - To create plots and describe results of simulated behavior run ```artificial/plots.ipynb```
 - ```checkpoint/checkpoint_trnn_5.pth``` is a state_dict of the trained model weights used for the analysis. 
 
+<!---
 ## Experiments with human behavior data
 - To generate a synthetic training-set run ```behavioral/generate_train_data.ipynb```.
 - To train a neural network model with the synthetic training-set run ```behavioral/rnn_train.ipynb```.
+-->
