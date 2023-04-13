@@ -1,8 +1,10 @@
-# Dynamical Inference of RL Parameters
+# Dynamical inference of RL parameters 
 Code accompanying the project Harnessing the Flexibility of Neural Networks to Predict Dynamical Theoretical Parameters of Human Choice Behavior
 
+In this project we developed a new framework we term t-RNN (theoretical-RNN), in which an RNN is trained to infer time-varying RL parameters of learning agent performing a two-armed bandit task
+
 ## Human behavioral datasets:
-The human behavioral dataset can be found in:
+The human behavioral datasets can be found at:
 - Dezfouli et al. (2019) *Models that learn how humans learn: The case of decision-making and its disorders*.
 https://figshare.com/articles/dataset/Models_that_learn_how_humans_learn_The_case_of_decision-making_and_its_disorders/8257259
 
