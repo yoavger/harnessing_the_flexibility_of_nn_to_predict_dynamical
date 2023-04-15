@@ -21,15 +21,15 @@ https://www.sciencedirect.com/science/article/pii/S0010027717303359#b0180
 ## Experiments with human dataset (psychiatric human individuals)  
 - To generate a synthetic training-set run ```dezfouli/code/create_train_data.ipynb```.
 - To train a t-RNN model with the synthetic training-set run ```dezfouli/code/trnn_training.ipynb```.
-- Code for stationary model can be found at ```dezfouli/code/qp_fit.py``` for stationary Q-learning with preservation model.
- - Code for data driven RNN can be found at ```dezfouli/code/drnn.ipynb```
+- Code for stationary model can be found at ```dezfouli/code/qp_fit.py``` stationary Q-learning with preservation model.
+- Code for data-driven RNN can be found at ```dezfouli/code/drnn.ipynb```
 - To create the plots and describe results of simulated behavior run ```dezfouli/code/plots.ipynb```
 - ```dezfouli/code/checkpoint_trnn.pth``` is a state_dict of the trained model weights used for the analysis. 
 
 ## Experiments with human dataset (exploration behavior)  
 - To generate a synthetic training-set run ```gershman/code/create_train_data.ipynb```.
 - To train a t-RNN model with the synthetic training-set run ```gershman/code/trnn_training.ipynb```.
-- Code for stationary model can be found at ```gershman/code/gershman_fit.py``` for stationary the hybrid exploration model.
-- Code for data driven RNN can be found at ```gershman/code/drnn.ipynb```
+- Code for stationary model can be found at ```gershman/code/gershman_fit.py``` stationary hybrid exploration model.
+- Code for data-driven RNN can be found at ```gershman/code/drnn.ipynb```
 - To create the plots and describe results of simulated behavior run ```gershman/code/plots.ipynb```
 - ```gershman/code/checkpoint_trnn.pth``` is a state_dict of the trained model weights used for the analysis. 
