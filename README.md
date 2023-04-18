@@ -1,7 +1,10 @@
 # Dynamical inference of RL parameters 
 Code accompanying the project Harnessing the Flexibility of Neural Networks to Predict Dynamical Theoretical Parameters of Human Choice Behavior
 
-In this project we developed a new framework we term t-RNN (theoretical-RNN), in which an RNN is trained to infer time-varying RL parameters of learning agent performing a two-armed bandit task
+In this project we developed a new framework we term t-RNN (theoretical-RNN), in which an RNN is trained to infer time-varying RL parameters of learning agent performing a two-armed bandit task. 
+
+![alt text](https://github.com/yoavger/harnessing_the_flexibility_of_nn_to_predict_dynamical/blob/main/for_git.pdf)
+
 
 ## Experiments with simulated behavior data 
 - To generate a synthetic training-set run ```artificial/code/create_train_data.ipynb```. 
