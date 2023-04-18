@@ -2,7 +2,7 @@ import numpy as np
 import pandas as pd
 from scipy.stats import norm
 
-def gershman_pred(df, parameters):
+def hybrid_pred(df, parameters):
 
     # counter of the number of action classified correctly (accuracy)
     accuracy = 0 
