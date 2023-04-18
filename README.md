@@ -3,7 +3,7 @@ Code accompanying the project Harnessing the Flexibility of Neural Networks to P
 
 In this project we developed a new framework we term t-RNN (theoretical-RNN), in which an RNN is trained to infer time-varying RL parameters of learning agent performing a two-armed bandit task. 
 
-<a href="url"> <img src="https://github.com/yoavger/harnessing_the_flexibility_of_nn_to_predict_dynamical/blob/main/artificial/plots/for_git.png" class="center" height="330" width="500" > </a>
+<a href="url"> <img src="https://github.com/yoavger/harnessing_the_flexibility_of_nn_to_predict_dynamical/blob/main/artificial/plots/for_git.png" height="330" width="500"></a>
 
 
 ## Experiments with simulated behavior data 
