@@ -3,7 +3,7 @@ import pandas as pd
 from scipy.stats import norm
 from scipy.optimize import minimize
 
-def gershman_fit(df,num_of_parameters_to_recover=2):
+def hybrid_fit(df,num_of_parameters_to_recover=2):
 
     # sample initial guess of the parameters to recover
     initial_guess = [np.random.uniform(0,4) for _ in range(num_of_parameters_to_recover)]
