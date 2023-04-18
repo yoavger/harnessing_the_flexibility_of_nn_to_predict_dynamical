@@ -2,7 +2,7 @@ import numpy as np
 import pandas as pd 
 from scipy.stats import norm
 
-def gershman_sim(index_agent, parameter, n_blocks, n_trials,
+def hybrid_sim(index_agent, parameter, n_blocks, n_trials,
                  probability_to_switch_parameters, max_change):
 
 
