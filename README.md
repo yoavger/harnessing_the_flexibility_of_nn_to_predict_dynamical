@@ -10,7 +10,7 @@ In this project we developed a new framework we term t-RNN (theoretical-RNN), in
 - To generate a synthetic training-set run ```artificial/code/create_train_data.ipynb```. 
 - To train a t-RNN model with the synthetic training-set run ```artificial/trnn_training.ipynb```.
 - Code for both baseline methods can be found at ```artificial/q_fit.py``` for Stationary Q-learning maximum-likelihood and ```artificial/code/bayesian_fit.py``` for Bayesian particle filtering.
-- To create the plots and describe results of simulated behavior run ```artificial/plots.ipynb```
+- Plots and describe results run ```artificial/plots.ipynb```
 - ```artificial/code/checkpoint/checkpoint_trnn_5.pth``` is a state_dict of the trained model weights used for the analysis. 
 
 ## Experiments with human dataset (psychiatric individuals)
@@ -24,7 +24,7 @@ Code:
 - To train a t-RNN model with the synthetic training-set run ```dezfouli/code/trnn_training.ipynb```.
 - Code for stationary Q-learning with preservation model can be found at ```dezfouli/code/qp_fit.py```
 - Code for data-driven RNN can be found at ```dezfouli/code/drnn.ipynb```
-- To create the plots and describe results of simulated behavior run ```dezfouli/code/plots.ipynb```
+- Plots and describe results run  ```dezfouli/code/plots.ipynb```
 - ```dezfouli/code/checkpoint_trnn.pth``` is a state_dict of the trained model weights used for the analysis. 
 
 ## Experiments with human dataset (exploration behavior)  
@@ -37,5 +37,5 @@ Code:
 - To train a t-RNN model with the synthetic training-set run ```gershman/code/trnn_training.ipynb```.
 - Code for stationary hybrid exploration model can be found at ```gershman/code/hybrid_fit.py``` 
 - Code for data-driven RNN can be found at ```gershman/code/drnn.ipynb```
-- To create the plots and describe results of simulated behavior run ```gershman/code/plots.ipynb```
+- Plots and describe results run ```gershman/code/plots.ipynb```
 - ```gershman/code/checkpoint_trnn.pth``` is a state_dict of the trained model weights used for the analysis. 
