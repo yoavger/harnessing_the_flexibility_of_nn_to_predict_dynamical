@@ -1,32 +1,35 @@
 import numpy as np
+from scipy.stats import norm
 
 def transition_function(particles, action, reward, N): 
     
-    alpha = 1 / (1 + np.exp(-particles[2,:]))
-    
-    # q dynamics 
-    particles[action,:] = particles[action,:] + alpha*(reward - particles[action,:])
-    
-    # alpha beta dynamics 
-    particles[2] += np.random.normal(0, 0.1, N)
-    particles[3] += np.random.normal(0, 0.05, N)
-    
+    kalman_gain = particles[action+2] / (particles[action+2]+particles[action+4])
+    particles[action] = particles[action] + kalman_gain * (reward-particles[action])
+    particles[action+2] = particles[action+2] - kalman_gain*particles[action+2]
+
+    # beta gamma dynamics 
+    particles[6] += np.random.normal(0, 0.1, N)
+    particles[7] += np.random.normal(0, 0.1, N)
+
     return particles
 
 def observation_likelihood(particles, action, N):
-    
-    q_0 = particles[0,:]
-    q_1 = particles[1,:]    
-    beta = (np.exp(particles[3,:])).clip(0,10)
-        
-    p_0 = (np.exp( beta*q_0 )) / ( np.exp( beta*q_0 ) + np.exp( beta*q_1 ) )
-    
-    likelihood = p_0 if action==0 else 1-p_0
-    
-    return likelihood, p_0
+
+    V = particles[0] - particles[1]
+    RU = np.sqrt(particles[2]) - np.sqrt(particles[3])
+    TU = np.sqrt((particles[2]) + (particles[3]))
+
+    beta = (np.exp(particles[6,:])).clip(0,4)
+    gamma = (np.exp(particles[7,:]))
+
+    p = norm.cdf( beta*(V/TU) + gamma*RU )
+
+    likelihood = p if action==0 else 1-p
+
+    return likelihood, p
 
 def resampling_systematic(w, N):
-    
+
     num_particles = len(w)
     u = np.random.random()/N
     edges = np.concatenate((0, np.cumsum(w)), axis=None)
@@ -62,17 +65,24 @@ def bayesian_fit(obs):
     N = 1_000
 
     # create 
-    particles = np.zeros(shape=(4,N))
-    
-    particles[0] = np.random.normal(0,0,N) # q_0 
-    particles[1] = np.random.normal(0,0,N) # q_1 
-    particles[2] = np.random.normal(0,3,N) # alpha 
-    particles[3] = np.random.normal(0,1,N) # beta 
-    
+    particles = np.zeros(shape=(8,N))
+
+    particles[0] = np.zeros(N) # q_0 
+    particles[1] = np.zeros(N) # q_1 
+
+    particles[2] = np.zeros(N) # sigma_0 
+    particles[3] = np.zeros(N) # sigma_1 
+
+    particles[4] = np.zeros(N) # tau_0 
+    particles[5] = np.zeros(N) # tau_1 
+
+    particles[6] = np.random.normal(0,1,N) # beta
+    particles[7] = np.random.normal(-2,1,N) # gamma
+
     num_observations = len(obs)
     observations = obs
 
-    state_arr = np.zeros((num_observations, 4))
+    state_arr = np.zeros((num_observations, 8))
     weights = np.ones(N)/N
     weights_arr = np.zeros((num_observations, N))
     likelihood_arr = np.zeros((num_observations, N))
@@ -81,10 +91,16 @@ def bayesian_fit(obs):
     
     for t in range(num_observations):
 
-        if t%100 == 0:
+        if t%10 == 0:
             particles[0] = np.random.normal(0,0,N)
             particles[1] = np.random.normal(0,0,N)
-        
+
+            particles[2] = np.repeat(100,N)
+            particles[3] = np.repeat(100,N)
+
+            particles[4] = np.repeat(10,N)
+            particles[5] = np.repeat(10,N)
+            
         idx, particles, weights, likelihood, p_0 = correct(particles, observations[t,:2], weights, N)
         state, particles = predict(particles, weights, observations[t,:2], N)
         
@@ -92,5 +108,6 @@ def bayesian_fit(obs):
         weights_arr[t,:] = weights
         likelihood_arr[t,:] = likelihood
         p_0_arr[t,:] = p_0
-        
+        aLast = observations[t][0]
+
     return state_arr, likelihood_arr, p_0_arr

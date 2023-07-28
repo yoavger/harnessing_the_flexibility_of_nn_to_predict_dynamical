@@ -7,19 +7,28 @@ def transition_function(particles, action, reward, N):
     # q dynamics 
     particles[action,:] = particles[action,:] + alpha*(reward - particles[action,:])
     
-    # alpha beta dynamics 
-    particles[2] += np.random.normal(0, 0.1, N)
-    particles[3] += np.random.normal(0, 0.05, N)
-    
+    # alpha beta kappa dynamics 
+    particles[2] += np.random.normal(0, 0.05, N)
+    particles[3] += np.random.normal(0, 0.005, N)
+    particles[4] += np.random.normal(0, 0.05, N)
+
     return particles
 
-def observation_likelihood(particles, action, N):
+def observation_likelihood(particles, action, N, aLast):
     
     q_0 = particles[0,:]
     q_1 = particles[1,:]    
-    beta = (np.exp(particles[3,:])).clip(0,10)
         
-    p_0 = (np.exp( beta*q_0 )) / ( np.exp( beta*q_0 ) + np.exp( beta*q_1 ) )
+    beta = (np.exp(particles[3,:])).clip(0,10)
+    kappa = ( 1 / ( 1 + np.exp( - (particles[4,:])) ) ) - .5
+
+    pres_array = np.zeros(shape=(2,N))
+    
+    if aLast > -1:
+        pres_array[aLast] = kappa
+        
+    p_0 = (np.exp( beta*( q_0 + pres_array[0]))) /\
+                                    ( np.exp( beta*( q_0 + pres_array[0]) ) + np.exp( beta*(q_1 + pres_array[1]) ) )
     
     likelihood = p_0 if action==0 else 1-p_0
     
@@ -39,9 +48,9 @@ def predict(particles, weights, observations, N):
     state = particles@weights
     return state, particles
 
-def correct(particles, observation, weights, N):
+def correct(particles, observation, weights, N, aLast):
  
-    likelihood, p_0 = observation_likelihood(particles, observation[0], N)
+    likelihood, p_0 = observation_likelihood(particles, observation[0], N, aLast)
     weights = weights
     weights = weights*likelihood
     weights = weights/sum(weights)
@@ -62,35 +71,42 @@ def bayesian_fit(obs):
     N = 1_000
 
     # create 
-    particles = np.zeros(shape=(4,N))
+    particles = np.zeros(shape=(5,N))
     
     particles[0] = np.random.normal(0,0,N) # q_0 
     particles[1] = np.random.normal(0,0,N) # q_1 
-    particles[2] = np.random.normal(0,3,N) # alpha 
-    particles[3] = np.random.normal(0,1,N) # beta 
     
+    particles[2] = np.random.normal(-2,1.5,N) # alpha 
+    particles[3] = np.random.normal(1,1,N) # beta  
+    particles[4] = np.random.normal(0,1.5,N) # kappa
+
     num_observations = len(obs)
     observations = obs
 
-    state_arr = np.zeros((num_observations, 4))
+    state_arr = np.zeros((num_observations, ß5))
     weights = np.ones(N)/N
     weights_arr = np.zeros((num_observations, N))
     likelihood_arr = np.zeros((num_observations, N))
     p_0_arr = np.zeros((num_observations, N))
 
+    aLast = -1
+    block = 0
     
     for t in range(num_observations):
 
-        if t%100 == 0:
+        if observations[t,2] == block:
             particles[0] = np.random.normal(0,0,N)
             particles[1] = np.random.normal(0,0,N)
+            block += 1
+            aLast = -1
         
-        idx, particles, weights, likelihood, p_0 = correct(particles, observations[t,:2], weights, N)
+        idx, particles, weights, likelihood, p_0 = correct(particles, observations[t,:2], weights, N, aLast)
         state, particles = predict(particles, weights, observations[t,:2], N)
         
         state_arr[t,:] = state
         weights_arr[t,:] = weights
         likelihood_arr[t,:] = likelihood
         p_0_arr[t,:] = p_0
-        
+        aLast = observations[t][0]
+
     return state_arr, likelihood_arr, p_0_arr
